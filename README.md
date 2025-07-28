@@ -1,56 +1,131 @@
-**ocs01-test**
+# 🧠 OCS01 Client Setup Guide
 
-rust cli for testing ocs01 smart contract
+This guide walks you through building and running the `ocs01-test` client inside a Docker container, resolving common issues, and pushing your documentation to GitHub.
 
-**what it does**
+---
 
--   tests all ocs01 contract methods
--   interactive menu for easy navigation
--   shows results instantly for view methods
--   handles tx signing for call methods
-
-**works on**
-
--   linux
--   macos
--   windows
-
-**install rust (if not installed)**
+## 📦 1. Setting up the Docker Environment
 
 ```bash
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-source $HOME/.cargo/env
+# Run Docker container and mount code folder
+sudo docker run -it -v $(pwd):/code rust:latest bash
+
+# Change to working directory
+cd /code
 ```
 
-**build from source**
+---
+
+## ⚙️ 2. Building the Project
 
 ```bash
-git clone https://github.com/octra-labs/ocs01-test.git
-cd ocs01-test
+# Navigate to the cloned repo
+cd /code
+
+# Build in release mode
 cargo build --release
 ```
 
-**setup**
+If you see OpenSSL-related errors:
 
 ```bash
-# copy contract interface
-cp EI/exec_interface.json .
+apt-get update && apt-get install -y pkg-config libssl-dev
 ```
 
-**required files in same directory**
+Then try building again.
 
--   wallet.json - create with your credentials
--   exec_interface.json - copy from EI/ folder
+---
 
-**run**
+## 📁 3. Place Required Files in `release` Folder
 
-you must copy the release binary to your cli folder and also copy the EI file (execution interface file) to the same location 
+Make sure the following JSON files exist in your `/code` directory:
 
-the release binary is located in this folder after successful build. 
+* `wallet.json`
+* `exec_interface.json`
+
+Example content for `wallet.json`:
+
+```json
+{
+  "priv": "C06oEo27KMjDjNzyrVxE1bhaCNdFOXyPkrLOSH2RXqM=",
+  "address": "oct3tdtpV4Mz38U2my5iEPuunn1e9a91U3mFTZo6jRKyoXi"
+}
+```
+
+Copy them into the release folder:
+
 ```bash
-./target/release/ocs01-test
+cp wallet.json ./target/release/
+cp exec_interface.json ./target/release/
+cd ./target/release/
 ```
 
-*for this task the ei file contains the interface for contract at address octBUHw585BrAMPMLQvGuWx4vqEsybYH9N7a3WNj1WBwrDn, do not modify it*
+---
 
-after running, follow the menu to interact with the contract
+## 🚀 4. Run the Program
+
+```bash
+./ocs01-test
+```
+
+You should now see a menu of options and your wallet balance.
+
+---
+
+## 📝 5. Record Full Terminal Session (Optional)
+
+```bash
+script full-session.log
+# When finished
+exit
+```
+
+This will save your entire terminal history to `full-session.log`
+
+---
+
+## 📤 6. Push to GitHub
+
+### Initialize Git (if not already)
+
+```bash
+git init
+git remote add origin https://github.com/Okon41/ocs01-client-guide.git
+```
+
+### Configure Your Identity
+
+```bash
+git config --global user.name "Okon41"
+git config --global user.email "icecool914@gmail.com"
+git config --global --add safe.directory /code
+```
+
+### Add & Commit
+
+```bash
+git add .
+git commit -m "Initial commit of ocs01-client-guide"
+```
+
+### Push to GitHub
+
+```bash
+git branch -M main
+git push -u origin main
+```
+
+If prompted, [generate a personal access token (PAT)](https://github.com/settings/tokens) and use that as your GitHub password (GitHub no longer supports account passwords over HTTPS).
+
+---
+
+## ✅ You're Done!
+
+Your setup is live and working. You can now build, run, and edit the OCS01 test client, and all documentation is safely stored in your GitHub repo.
+
+**Repo:** [github.com/Okon41/ocs01-client-guide](https://github.com/Okon41/ocs01-client-guide)
+
+---
+
+Let me know if you want a cleaner version or a README format!
+
