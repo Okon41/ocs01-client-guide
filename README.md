@@ -96,8 +96,8 @@ git remote add origin https://github.com/Okon41/ocs01-client-guide.git
 ### Configure Your Identity
 
 ```bash
-git config --global user.name "Okon41"
-git config --global user.email "icecool914@gmail.com"
+git config --global user.name ""
+git config --global user.email ""
 git config --global --add safe.directory /code
 ```
 
